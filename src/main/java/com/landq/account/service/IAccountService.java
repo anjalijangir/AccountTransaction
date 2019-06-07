@@ -1,9 +1,11 @@
 package com.landq.account.service;
 
+import com.landq.account.ApplicationException;
+
 public interface IAccountService {
 
-	public boolean checkAccountDetails(String senderAcccount, String receiverAcccount);
+	public void checkAccountDetails(String senderAcccount, String receiverAcccount) throws ApplicationException;
 
-	public void doTransfer(String senderAccount, String receiverAccount, Double transferAmount);
+	public void doTransfer(AccountTransferRequest accountTransferRequest) throws ApplicationException;
 
 }

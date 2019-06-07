@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @ComponentScan("com.landq.account")
 @Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.landq.account.repository")
+@EnableTransactionManagement //todo -Transaction Management understand
+@EnableJpaRepositories(basePackages = "com.landq.account.dao")
 public class Config {
 	@Bean
 	public DataSource dataSource() {

@@ -5,10 +5,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.landq.account.dao.IAccountDAO;
+import com.landq.account.dao.IUserDAO;
 import com.landq.account.domain.Account;
 import com.landq.account.domain.User;
-import com.landq.account.repository.AccountRepository;
-import com.landq.account.repository.UserRepository;
 import com.landq.account.service.IAccountService;
 import com.landq.account.service.IAuthenticationService;
 import com.landq.account.service.impl.AccountService;
@@ -27,13 +27,16 @@ public class Run {
 		// Check for user login
 		IAuthenticationService authenticationService = ctx.getBean(AuthenticationService.class);
 		boolean isLoginSussess = authenticationService.doAuthentication("anjali", "admin");
+
 		if (isLoginSussess) {
 			System.out.println("Authentication successfull !!!");
-
+			// Check Account Details for Sender and Receiver
 			IAccountService accountService = ctx.getBean(AccountService.class);
 			boolean isAccountValid = accountService.checkAccountDetails("123456", "9876543");
+			// If Account is valid then print Account Validation successful and Transfer the
+			// balance
 			if (isAccountValid) {
-				System.out.println("Account validation successfull !!!");
+				System.out.println("Account validation successful !!!");
 				accountService.doTransfer("123456", "9876543", 20.0);
 			}
 		}
@@ -41,9 +44,9 @@ public class Run {
 	}
 
 	private static void generateFakeData(ApplicationContext ctx) {
-		// get beans for database repository
-		UserRepository userRepository = ctx.getBean(UserRepository.class);
-		AccountRepository accountRepository = ctx.getBean(AccountRepository.class);
+		// get beans for database DAO
+		IUserDAO userRepository = ctx.getBean(IUserDAO.class);
+		IAccountDAO accountRepository = ctx.getBean(IAccountDAO.class);
 
 		// create a sender user and save it to database
 		User sender = new User();
@@ -63,7 +66,7 @@ public class Run {
 		senderAccount.setUserName("anjali");
 		accountRepository.save(senderAccount);
 
-		// create a sender user and save it to database
+		// create a Receiver user and save it to database
 		User receiver = new User();
 		receiver.setEmail("abc@abc");
 		receiver.setFirstName("Tom");
@@ -72,7 +75,7 @@ public class Run {
 		receiver.setPassword("tom");
 		userRepository.save(receiver);
 
-		// create sender user account and save it to database
+		// create Receiver user account and save it to database
 		Account receiverAccount = new Account();
 		receiverAccount.setAccountNumber("9876543");
 		receiverAccount.setBalance(100.00);
