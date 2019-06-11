@@ -17,12 +17,20 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Configuration class Configure the databases and entities and it contains
+ * beans.
+ * 
+ * @author Anjali
+ *
+ */
 @ComponentScan("com.landq.account")
 @Configuration
-@EnableTransactionManagement //todo -Transaction Management understand
+@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.landq.account.dao")
 public class Config {
-	@Bean
+
+	@Bean /** It will create the bean for DataSource */
 	public DataSource dataSource() {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -33,7 +41,7 @@ public class Config {
 		return dataSource;
 	}
 
-	@Bean
+	@Bean /** It will create the bean for LocalContainerEntityManagerFactoryBean */
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
@@ -46,7 +54,7 @@ public class Config {
 		return em;
 	}
 
-	@Bean
+	@Bean /** It will create the bean for PlatformTransactionManager. */
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		JpaTransactionManager tManager = new JpaTransactionManager();
 
@@ -54,12 +62,6 @@ public class Config {
 
 		return tManager;
 	}
-
-//		 @Bean
-//		 public PersistenceExceptionTranslationPostProcessor eTranslation() {
-//			 
-//			 return new PersistenceExceptionTranslationPostProcessor();
-//		 }
 
 	Properties additionalProperties() {
 

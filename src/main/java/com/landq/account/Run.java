@@ -9,37 +9,30 @@ import com.landq.account.dao.IAccountDAO;
 import com.landq.account.dao.IUserDAO;
 import com.landq.account.domain.Account;
 import com.landq.account.domain.User;
-import com.landq.account.service.IAccountService;
-import com.landq.account.service.IAuthenticationService;
+import com.landq.account.service.AccountTransferRequest;
 import com.landq.account.service.impl.AccountService;
-import com.landq.account.service.impl.AuthenticationService;
 
 @Configuration
 @Import(Config.class)
 public class Run {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ApplicationException {
 
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
 
 		// save fake data to database to perform the operation
 		generateFakeData(ctx);
 		// Check for user login
-		IAuthenticationService authenticationService = ctx.getBean(AuthenticationService.class);
-		boolean isLoginSussess = authenticationService.doAuthentication("anjali", "admin");
+		AccountService accountService = ctx.getBean(AccountService.class);
 
-		if (isLoginSussess) {
-			System.out.println("Authentication successfull !!!");
-			// Check Account Details for Sender and Receiver
-			IAccountService accountService = ctx.getBean(AccountService.class);
-			boolean isAccountValid = accountService.checkAccountDetails("123456", "9876543");
-			// If Account is valid then print Account Validation successful and Transfer the
-			// balance
-			if (isAccountValid) {
-				System.out.println("Account validation successful !!!");
-				accountService.doTransfer("123456", "9876543", 20.0);
-			}
-		}
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername("anjali");
+		accountTransferRequest.setPassword("admin");
+		accountTransferRequest.setSenderAccount("123456");
+		accountTransferRequest.setReceiverAccount("9876543");
+		accountTransferRequest.setTransferAmount(30.0);
+
+		accountService.transferMoney(accountTransferRequest);
 
 	}
 
@@ -57,6 +50,15 @@ public class Run {
 		sender.setPassword("admin");
 		userRepository.save(sender);
 
+		// create a Receiver user and save it to database
+		User receiver = new User();
+		receiver.setEmail("abc@abc");
+		receiver.setFirstName("Tom");
+		receiver.setLastName("Cruiz");
+		receiver.setUserName("tom");
+		receiver.setPassword("tom");
+		userRepository.save(receiver);
+		
 		// create sender user account and save it to database
 		Account senderAccount = new Account();
 		senderAccount.setAccountNumber("123456");
@@ -66,15 +68,6 @@ public class Run {
 		senderAccount.setUserName("anjali");
 		accountRepository.save(senderAccount);
 
-		// create a Receiver user and save it to database
-		User receiver = new User();
-		receiver.setEmail("abc@abc");
-		receiver.setFirstName("Tom");
-		receiver.setLastName("Cruiz");
-		receiver.setUserName("tom");
-		receiver.setPassword("tom");
-		userRepository.save(receiver);
-
 		// create Receiver user account and save it to database
 		Account receiverAccount = new Account();
 		receiverAccount.setAccountNumber("9876543");
@@ -83,6 +76,14 @@ public class Run {
 		receiverAccount.setIfscCode("ICICI001");
 		receiverAccount.setUserName("tom");
 		accountRepository.save(receiverAccount);
+
+		User receiver1 = new User();
+		receiver1.setEmail("Ravi@abc");
+		receiver1.setFirstName("Ravi");
+		receiver1.setLastName("Kumar");
+		receiver1.setUserName("rrrr");
+		receiver1.setPassword("tom");
+		userRepository.save(receiver1);
 
 	}
 
