@@ -124,7 +124,7 @@ public class TransferValidationUnit {
 		// Checks if Sender and Receiver account same then throw
 		// Invalid_Sender_And_Receiver_AccountNumber exception
 		if (senderAcccountNumber.equals(receiverAcccountNumber)) {
-			throw new ValidationException("Invalid_Sender_Receiver_AccountNumber");
+			throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
 		}
 
 	}
