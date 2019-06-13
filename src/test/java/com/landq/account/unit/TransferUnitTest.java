@@ -140,6 +140,10 @@ import com.landq.account.service.AccountTransferRequest;
  *                      19.testBothSenderAndReceiverAccountSame--Checks if both
  *                      sender and receiver accounts are same then throw
  *                      "InValid_Receiver_And_Sender_Account".
+ *                      
+ *                      20.testSenderAndReceiverAccountNumberPatternValidation--checks
+ *                      if Account holder's account number in valid pattern or not then throw
+ *                      "Invalid_Sender_And_Receiver_AccountNumber" exception.
  */
 
 public class TransferUnitTest {
@@ -147,21 +151,31 @@ public class TransferUnitTest {
 	private IAccountDAO accountRepository;
 
 	@Mock /** will create a mock implementation for the AuthenticationUnit */
-	private AuthenticationUnit authenticationUnit;
+	private TransferAuthenticationUnit authenticationUnit;
+	
+	@Mock
+	private TransferValidationUnit validationUnit;
+	
+	@Mock
+	private TransferBusinessUnit businessUnit;
 
-	@InjectMocks /**
-					 * will inject the mocks marked with @Mock to this instance when it is created.
-					 */
+	@InjectMocks //will inject the mocks marked with @Mock to this instance when it is created.					 
 	TransferUnit transferUnit;
+	
+	@InjectMocks
+	TransferValidationUnit validationUnit1;
+	
 
 	/**
 	 * For the testing purpose here i am giving VALID_USERNAME and VALID_PASSWORD as
 	 * a constant with Final keyword.
 	 */
-	private final String VALID_USERNAME = "anjali";
+	private final String VALID_USERNAME = "anjali123";
 	private final String VALID_PASSWORD = "admin";
+	private final String VALID_SENDER_ACCOUNT_NUMBER="123456";
+	private final String VALID_RECEIVER_ACCOUNT_NUMBER="9876543";
 
-	@Before /** It will initialize a mock instance for TransferUnit and transferUnit */
+	@Before // It will initialize a mock instance for TransferUnit and transferUnit 
 	public void init() {
 		transferUnit = new TransferUnit();
 		MockitoAnnotations.initMocks(this);
@@ -202,19 +216,19 @@ public class TransferUnitTest {
 
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 
-		} catch (ApplicationException exception) {
+		} catch (AuthenticationException exception) {
 			// Assert compares the actual result of an application with the expected result.
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	@Test
@@ -234,7 +248,7 @@ public class TransferUnitTest {
 
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 
@@ -245,7 +259,7 @@ public class TransferUnitTest {
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	/**
@@ -272,7 +286,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (AuthenticationException exception) {
@@ -281,7 +295,7 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	/**
@@ -315,7 +329,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (AuthenticationException exception) {
@@ -324,7 +338,7 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	/**
@@ -361,7 +375,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exceptipon");
 		} catch (AuthenticationException exception) {
@@ -371,7 +385,7 @@ public class TransferUnitTest {
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	/**
@@ -409,7 +423,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exceptipon");
 		} catch (AuthenticationException exception) {
@@ -418,7 +432,7 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	/**
@@ -457,7 +471,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (AuthenticationException exception) {
@@ -466,7 +480,7 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	@Test
@@ -486,7 +500,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (AuthenticationException exception) {
@@ -495,12 +509,12 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	@Test
 	public void testBothUserNameAndPasswordEmpty()
-			throws BusinessException, ApplicationException, AuthenticationException {
+			throws ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername("");
 		accountTransferRequest.setPassword("");
@@ -515,7 +529,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (AuthenticationException exception) {
@@ -524,7 +538,7 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	@Test
@@ -544,7 +558,7 @@ public class TransferUnitTest {
 				public Void answer(InvocationOnMock invocation) throws Throwable {
 					throw new AuthenticationException("Invalid_userName_and_password");
 				}
-			}).when(authenticationUnit).doAuthentication(Mockito.anyString(), Mockito.anyString());
+			}).when(authenticationUnit).authenticate(Mockito.anyString(), Mockito.anyString());
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (AuthenticationException exception) {
@@ -553,7 +567,7 @@ public class TransferUnitTest {
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_userName_and_password", exception.getMessage());
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
 	/**
@@ -565,19 +579,18 @@ public class TransferUnitTest {
 	 * 
 	 * @throws BusinessException
 	 * 
-	 *                           Data set:<br>
-	 *                           1.AccountTransferRequest.<br>
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
 	 * 
-	 *                           Verification :<br>
-	 *                           1. Here i am giving transfer amount is zero as a
-	 *                           input and i am checking actual amount output not
-	 *                           same <br>
-	 *                           then it will throw exception .<br>
-	 *                           2. Verifying it's fail or not.<br>
+	 * Verification :<br>
+	 * 1. Here i am giving transfer amount is zero as a
+	 * input and i am checking actual amount output not same <br>
+	 * then it will throw exception .<br>
+	 * 2. Verifying it's fail or not.<br>
 	 * 
 	 */
 	@Test
-	public void testTransferAmountIsZero() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testTransferAmountIsZero() throws  ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
@@ -595,18 +608,127 @@ public class TransferUnitTest {
 			Assert.assertEquals("Transfer_Amount_InValid", exception.getMessage());
 
 		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).doAuthentication(Mockito.anyString(), Mockito.anyString());
+		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
-
+	
+	/**
+	 * In this scenario checks if sender account number  is null then
+	 * "Sender_Account_Cannot_Be_Null_Or_Empty" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
 	@Test
-	public void testSenderAccountNumberNull() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testSenderAccountNumberNull() throws  BusinessException, AuthenticationException, ApplicationException,ValidationException {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount(null);
+		accountTransferRequest.setReceiverAccount(VALID_RECEIVER_ACCOUNT_NUMBER);
+		accountTransferRequest.setTransferAmount(100.0);
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Sender_Account_Cannot_Be_Null_Or_Empty");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Sender_Account_Cannot_Be_Null_Or_Empty", exception.getMessage());
+		}
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
+
+	}
+	
+	/**
+	 * In this scenario checks if sender account number  is empty then
+	 * "Sender_Account_Cannot_Be_Null_Or_Empty" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
+	
+	@Test
+	public void testSenderAccountNumberEmpty() throws ApplicationException {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount("");
+		accountTransferRequest.setReceiverAccount(VALID_RECEIVER_ACCOUNT_NUMBER);
+		accountTransferRequest.setTransferAmount(100.0);
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Sender_Account_Cannot_Be_Null_Or_Empty");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Sender_Account_Cannot_Be_Null_Or_Empty", exception.getMessage());
+		}
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
+	}
+	
+	/**
+	 * In this scenario checks if sender account number  is mismatch then
+	 * "Invalid_Sender_AccountNumber" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
+	
+	@Test
+	public void testSenderAccountNumberMisMatch() throws  ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
 		accountTransferRequest.setSenderAccount("233456");
-		accountTransferRequest.setReceiverAccount("273456");
+		accountTransferRequest.setReceiverAccount(VALID_RECEIVER_ACCOUNT_NUMBER);
 		accountTransferRequest.setTransferAmount(100.0);
 		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (ValidationException exception) {
@@ -614,62 +736,129 @@ public class TransferUnitTest {
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_Sender_AccountNumber", exception.getMessage());
-
 		}
-
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
 	}
 	
+	/**
+	 * In this scenario checks if receiver account number  is null then
+	 * "Receiver_Account_Cannot_Be_Null_Or_Empty" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
+	
 	@Test
-	public void testSenderAccountNumberEmpty() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testReceiverAccountNumberNull() throws  ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
-		accountTransferRequest.setSenderAccount("233456");
-		accountTransferRequest.setReceiverAccount("273456");
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount(null);
 		accountTransferRequest.setTransferAmount(100.0);
 		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Receiver_Account_Cannot_Be_Null_Or_Empty");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (ValidationException exception) {
 			// Assert compares the actual result of an application with the expected result.
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
-			Assert.assertEquals("Invalid_Sender_AccountNumber", exception.getMessage());
-
+			Assert.assertEquals("Receiver_Account_Cannot_Be_Null_Or_Empty", exception.getMessage());
 		}
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
 
 	}
 	
+	/**
+	 * In this scenario checks if receiver account number  is empty then
+	 * "Receiver_Account_Cannot_Be_Null_Or_Empty" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
+	
 	@Test
-	public void testSenderAccountNumberMisMatch() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testReceiverAccountNumberEmpty() throws ApplicationException{
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
-		accountTransferRequest.setSenderAccount("233456");
-		accountTransferRequest.setReceiverAccount("273456");
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount("");
 		accountTransferRequest.setTransferAmount(100.0);
 		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Receiver_Account_Cannot_Be_Null_Or_Empty");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (ValidationException exception) {
 			// Assert compares the actual result of an application with the expected result.
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
-			Assert.assertEquals("Invalid_Sender_AccountNumber", exception.getMessage());
-
+			Assert.assertEquals("Receiver_Account_Cannot_Be_Null_Or_Empty", exception.getMessage());
 		}
-
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
 	}
+
+	/**
+	 * In this scenario checks if receiver account number  is mismatch then
+	 * "Invalid_Receiver_AccountNumber" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
 	
 	@Test
-	public void testReceiverAccountNumberNull() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testReceiverAccountNumberMisMatch() throws  ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
-		accountTransferRequest.setSenderAccount("233456");
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
 		accountTransferRequest.setReceiverAccount("273456");
 		accountTransferRequest.setTransferAmount(100.0);
 		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (ValidationException exception) {
@@ -677,20 +866,42 @@ public class TransferUnitTest {
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_Receiver_AccountNumber", exception.getMessage());
-
 		}
-
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
 	}
 	
+	/**
+	 * In this scenario checks if Sender and Receiver account number same  then
+	 * "Invalid_Sender_And_Receiver_AccountNumber" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
+	
 	@Test
-	public void testReceiverAccountNumberEmpty() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testBothSenderAndReceiverAccountSame() throws  ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
-		accountTransferRequest.setSenderAccount("233456");
-		accountTransferRequest.setReceiverAccount("273456");
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount(VALID_SENDER_ACCOUNT_NUMBER);
 		accountTransferRequest.setTransferAmount(100.0);
 		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (ValidationException exception) {
@@ -698,31 +909,69 @@ public class TransferUnitTest {
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
 			Assert.assertEquals("Invalid_Receiver_AccountNumber", exception.getMessage());
-
 		}
-
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
 	}
 	
+	/**
+	 * In this scenario checks if Sender and Receiver account number has valid pattern or not then
+	 * "Invalid_Sender_And_Receiver_AccountNumber" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
+	
 	@Test
-	public void testReceiverAccountNumberMisMatch() throws BusinessException, ApplicationException, AuthenticationException {
+	public void testSenderAndReceiverAccountNumberPatternValidation() throws ApplicationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername(VALID_USERNAME);
 		accountTransferRequest.setPassword(VALID_PASSWORD);
-		accountTransferRequest.setSenderAccount("233456");
-		accountTransferRequest.setReceiverAccount("273456");
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount(VALID_RECEIVER_ACCOUNT_NUMBER);
 		accountTransferRequest.setTransferAmount(100.0);
 		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
 			transferUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (ValidationException exception) {
 			// Assert compares the actual result of an application with the expected result.
 			Assert.assertNotNull(exception);
 			Assert.assertTrue(exception != null);
-			Assert.assertEquals("Invalid_Receiver_AccountNumber", exception.getMessage());
-
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
 		}
+		Mockito.verify(validationUnit, Mockito.times(1)).validate(accountTransferRequest);
 
 	}
+	
+	/**
+	 * In this scenario checks if Sender and Receiver account number has valid pattern or not then
+	 * "Invalid_Sender_And_Receiver_AccountNumber" exception will arise.
+	 * 
+	 * @author Anjali
+	 * @throws ApplicationException 
+	 * @throws AuthenticationException 
+	 * 
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 */
 	
 	
 }

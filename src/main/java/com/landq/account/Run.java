@@ -26,7 +26,7 @@ public class Run {
 		AccountService accountService = ctx.getBean(AccountService.class);
 
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
-		accountTransferRequest.setUsername("anjali");
+		accountTransferRequest.setUsername("anjali123");
 		accountTransferRequest.setPassword("admin");
 		accountTransferRequest.setSenderAccount("123456");
 		accountTransferRequest.setReceiverAccount("9876543");

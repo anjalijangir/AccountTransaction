@@ -15,13 +15,13 @@ import com.landq.account.exception.AuthenticationException;
  *
  */
 @Component
-public class AuthenticationUnit {
+public class TransferAuthenticationUnit {
 
 	@Autowired
 	private IUserDAO userDao;
 
 	/**
-	 * Here doAuthentication method is used for verify the user to do
+	 * Here authentication method is used for authenticates the user to do
 	 * transaction..using username and password If userName and password is not
 	 * valid then user is not able to do transaction.
 	 * 
@@ -31,17 +31,19 @@ public class AuthenticationUnit {
 	 * @param password
 	 * @throws AuthenticationException
 	 */
-	public void performManadatoryAuthentication(String userName, String password) throws AuthenticationException {
-		if ((userName == null && userName.isEmpty()) || (password == null && password.isEmpty())) {
+	public void authenticate(String userName, String password) throws AuthenticationException {
+		if ((userName == null || userName.isEmpty()) || (password == null || password.isEmpty())) {
 			throw new AuthenticationException("Invalid_userName_and_password");
 		}
 		User user = userDao.findByUserName(userName);
 		if (user != null) {
-			if (!user.getPassword().equals(password)) {
+			if (user.getPassword() == null || !user.getPassword().equals(password)) {
 				throw new AuthenticationException("Invalid_userName_and_password");
 			} else {
-				throw new AuthenticationException("Invalid_userName_and_password");
+				// successfully authenticated.
 			}
+		} else {
+			throw new AuthenticationException("Invalid_userName_and_password");
 		}
 	}
 }
