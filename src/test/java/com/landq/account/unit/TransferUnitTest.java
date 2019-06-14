@@ -12,6 +12,7 @@ import org.mockito.stubbing.Answer;
 
 import com.landq.account.ApplicationException;
 import com.landq.account.dao.IAccountDAO;
+import com.landq.account.domain.Account;
 import com.landq.account.exception.AuthenticationException;
 import com.landq.account.exception.BusinessException;
 import com.landq.account.exception.ValidationException;
@@ -75,6 +76,8 @@ import com.landq.account.service.AccountTransferRequest;
  *                    2.ensureTransferAmountNegative---Checks if transfer amount
  *                    is negative then throw "Transfer_Amount_Negative"
  *                    exception<br>
+ *                    
+ *                    3.testTransferAmountInSufficeint--checks
  * 
  * @ValidationException
  * 
@@ -188,16 +191,14 @@ public class TransferUnitTest {
 	 * 
 	 * @author Anjali
 	 * 
-	 *         Data set:<br>
-	 *         1.AccountTransferRequest.<br>
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
 	 * 
 	 * @throws AuthenticationException
 	 * 
-	 *                                 Verification :<br>
-	 *                                 1. Here i am checking if expected input and
-	 *                                 actual input not same then it will throw
-	 *                                 exception .<br>
-	 *                                 2. Verifying it's fail or not.<br>
+	 * Verification :<br>
+	 * 1. Here i am checking if expected input and actual input not same then it will throw exception .<br>
+	 * 2. Verifying it's fail or not.<br>
 	 */
 	@Test
 	public void testInputsEmpty() throws BusinessException, ApplicationException, AuthenticationException {
@@ -231,6 +232,20 @@ public class TransferUnitTest {
 		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
+	/**
+	 * This test case checks if user name null then throw "Invalid_userName_and_password" exception.
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected input and actual input not same then it will throw exception .<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
 	@Test
 	public void testUserNameNull() throws BusinessException, ApplicationException, AuthenticationException {
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
@@ -349,14 +364,12 @@ public class TransferUnitTest {
 	 * 
 	 * @throws AuthenticationException
 	 * 
-	 *                                 Data set:<br>
-	 *                                 1.AccountTransferRequest.<br>
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
 	 * 
-	 *                                 Verification :<br>
-	 *                                 1.Here i am checking if expected password and
-	 *                                 actual password not same then it will throw
-	 *                                 exception .<br>
-	 *                                 2.Verifying it's fail or not.<br>
+	 * Verification :
+	 *  1.Here i am checking if expected password and actual password not same then it will throw  exception .<br>
+	 *  2.Verifying it's fail or not.<br>
 	 */
 	@Test
 	public void testPasswordIsNull() throws BusinessException, ApplicationException, AuthenticationException {
@@ -396,13 +409,14 @@ public class TransferUnitTest {
 	 * 
 	 * @author Anjali
 	 * 
-	 *         Data set:<br>
-	 *         1.AccountTransferRequest.<br>
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
 	 * 
-	 *         Verification :<br>
-	 *         1. Here i am checking if expected password input is empty and actual
-	 *         password output not same then it will throw exception .<br>
-	 *         2. Verifying it's fail or not.<br>
+	 * Verification :<br>
+	 * 1. Here i am checking if expected password input is empty and actual
+	 * password output not same then it will throw exception .<br>
+	 * 
+	 * 2. Verifying it's fail or not.<br>
 	 * 
 	 * 
 	 */
@@ -443,16 +457,14 @@ public class TransferUnitTest {
 	 * 
 	 * @author Anjali
 	 * 
-	 *         Data set:<br>
-	 *         1.AccountTransferRequest.<br>
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
 	 * 
 	 * @throws AuthenticationException
 	 * 
-	 *                                 Verification :<br>
-	 *                                 1. Here i am checking if expected password
-	 *                                 input and actual password output not same
-	 *                                 then it will throw exception .<br>
-	 *                                 2. Verifying it's fail or not.<br>
+	 * Verification :<br>
+	 * 1. Here i am checking if expected password Input and actual password output not same then it will throw exception .<br>
+	 * 2. Verifying it's fail or not.<br>
 	 */
 	@Test
 	public void testPasswordIsMisMatch() throws BusinessException, ApplicationException, AuthenticationException {
@@ -482,7 +494,21 @@ public class TransferUnitTest {
 		}
 		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
-
+	/**
+	 * This scenario checks whether given user name and  password is null or not then 
+	 * throw an exception "Invalid_userName_and_password".
+	 * 
+	 * @author Anjali
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * Verification :
+	 *  1.Here i am checking if expected user name password and actual password not same then it will throw  exception .<br>
+	 *  2.Verifying it's fail or not.<br>
+	 */
 	@Test
 	public void testBothUserNameAndPasswordNull()
 			throws BusinessException, ApplicationException, AuthenticationException {
@@ -511,7 +537,22 @@ public class TransferUnitTest {
 		}
 		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
-
+    
+	/**
+	 * This scenario checks whether given user name and  password is empty or not then 
+	 * throw an exception "Invalid_userName_and_password".
+	 * 
+	 * @author Anjali
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * Verification :
+	 *  1.Here i am checking if expected user name password and actual password not same then it will throw  exception .<br>
+	 *  2.Verifying it's fail or not.<br>
+	 */
 	@Test
 	public void testBothUserNameAndPasswordEmpty()
 			throws ApplicationException {
@@ -540,7 +581,22 @@ public class TransferUnitTest {
 		}
 		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
-
+	
+	/**
+	 * This scenario checks whether given user name and  password is mismatch or not then 
+	 * throw an exception "Invalid_userName_and_password".
+	 * 
+	 * @author Anjali
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * Verification :
+	 *  1.Here i am checking if expected user name password and actual password not same then it will throw  exception .<br>
+	 *  2.Verifying it's fail or not.<br>
+	 */
 	@Test
 	public void testBothUserNameAndPasswordMisMatch()
 			throws BusinessException, ApplicationException, AuthenticationException {
@@ -570,46 +626,6 @@ public class TransferUnitTest {
 		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
 	}
 
-	/**
-	 * In this scenario checks if transfer amount is zero then
-	 * "Transfer_Amount_InValid" exception will arise.
-	 * 
-	 * @author Anjali
-	 * 
-	 * 
-	 * @throws BusinessException
-	 * 
-	 * Data set:<br>
-	 * 1.AccountTransferRequest.<br>
-	 * 
-	 * Verification :<br>
-	 * 1. Here i am giving transfer amount is zero as a
-	 * input and i am checking actual amount output not same <br>
-	 * then it will throw exception .<br>
-	 * 2. Verifying it's fail or not.<br>
-	 * 
-	 */
-	@Test
-	public void testTransferAmountIsZero() throws  ApplicationException {
-		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
-		accountTransferRequest.setUsername(VALID_USERNAME);
-		accountTransferRequest.setPassword(VALID_PASSWORD);
-		accountTransferRequest.setSenderAccount("233456");
-		accountTransferRequest.setReceiverAccount("273456");
-		accountTransferRequest.setTransferAmount(0.0);
-		try {
-
-			transferUnit.transfer(accountTransferRequest);
-			Assert.fail("No_Exception");
-		} catch (BusinessException exception) {
-			// Assert compares the actual result of an application with the expected result.
-			Assert.assertNotNull(exception);
-			Assert.assertTrue(exception != null);
-			Assert.assertEquals("Transfer_Amount_InValid", exception.getMessage());
-
-		}
-		Mockito.verify(authenticationUnit, Mockito.times(1)).authenticate(Mockito.anyString(), Mockito.anyString());
-	}
 	
 	/**
 	 * In this scenario checks if sender account number  is null then
@@ -922,7 +938,7 @@ public class TransferUnitTest {
 	 * @throws AuthenticationException 
 	 * 
 	 * 
-	 * @throws BusinessException
+	 * @throws ValidationException
 	 * 
 	 * Data set:<br>
 	 * 1.AccountTransferRequest.<br>
@@ -958,20 +974,410 @@ public class TransferUnitTest {
 	}
 	
 	/**
-	 * In this scenario checks if Sender and Receiver account number has valid pattern or not then
-	 * "Invalid_Sender_And_Receiver_AccountNumber" exception will arise.
+	 * This scenario checks whether receiver account number has valid length or not.
+	 *
 	 * 
 	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
 	 * @throws ApplicationException 
-	 * @throws AuthenticationException 
+	 * @throws BusinessException 
 	 * 
+	 * @throws ValidationException
 	 * 
-	 * @throws BusinessException
+	 * Verification :<br>
+	 * 1. Here i am checking if expected receiver account number  input and actual output same or not if not then 
+	 * it will throw exception"Invalid_Sender_And_Receiver_AccountNumber".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testReceiverAccountNumberLength() throws BusinessException, AuthenticationException, ApplicationException  {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount("56789054");
+		accountTransferRequest.setTransferAmount(400.0);		
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
+		}
+	
+}
+	/**
+	 * This scenario checks whether sender account number has valid pattern or not.
+	 *
+	 * 
+	 * @author Anjali
 	 * 
 	 * Data set:<br>
 	 * 1.AccountTransferRequest.<br>
 	 * 
+	 * @throws ValidationException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected receiver account number  input and actual output same or not if not then 
+	 * it will throw exception"Invalid_Sender_And_Receiver_AccountNumber".<br>
+	 * 2. Verifying it's fail or not.<br>
 	 */
+	@Test
+	public void testSenderAccountNumberPattern()
+			throws BusinessException, AuthenticationException, ApplicationException {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount("&*546abc");
+		accountTransferRequest.setReceiverAccount(VALID_RECEIVER_ACCOUNT_NUMBER);
+		accountTransferRequest.setTransferAmount(400.0);
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
+		}
+
+	}
+	
+	/**
+	 * This scenario checks whether receiver account number has valid pattern or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * @throws ValidationException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected receiver account number  input and actual output same or not if not then 
+	 * it will throw exception"Invalid_Sender_And_Receiver_AccountNumber".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testReceiverAccountNumberPattern()
+			throws BusinessException, AuthenticationException, ApplicationException {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount("##$12345");
+		accountTransferRequest.setTransferAmount(400.0);
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
+		}
+
+	}
+	
+	/**
+	 * This scenario checks whether transfer amount null or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * @throws ApplicationException 
+	 * @throws BusinessException 
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected transfer amount  input and actual output same or not then 
+	 * it will throw exception"transferAmount_Cannot_Be_Null".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testTransferAmountNull() throws BusinessException, AuthenticationException, ApplicationException  {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount("123456");
+		accountTransferRequest.setReceiverAccount("123456");
+		accountTransferRequest.setTransferAmount(null);		
+		
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
+		}
+
+	}
+	
+
+	/**
+	 * This scenario checks whether transfer amount zero or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * @throws ApplicationException 
+	 * @throws BusinessException 
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected transfer amount  input and actual output same or not then 
+	 * it will throw exception"transferAmount_Cannot_Be_Negative_Or_Zero".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testTransferAmountZero() throws BusinessException, AuthenticationException, ApplicationException  {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount("123456");
+		accountTransferRequest.setReceiverAccount("123456");
+		accountTransferRequest.setTransferAmount(0.0);	
+		
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
+		}
+
+	}
+	
+	/**
+	 * This scenario checks whether transfer amount negative or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * @throws ApplicationException 
+	 * @throws BusinessException 
+	 * 
+	 * @throws AuthenticationException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected transfer amount  input and actual output same or not then 
+	 * it will throw exception"transferAmount_Cannot_Be_Negative_Or_Zero".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testTransferAmountNegative() throws BusinessException, AuthenticationException, ApplicationException {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount("123456");
+		accountTransferRequest.setReceiverAccount("123456");
+		accountTransferRequest.setTransferAmount(-100.0);
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Invalid_Sender_And_Receiver_AccountNumber");
+				}
+			}).when(validationUnit).validate(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Invalid_Sender_And_Receiver_AccountNumber", exception.getMessage());
+		}
+
+	}
+	
+
+	/**
+	 * This scenario checks whether transfer amount sufficient or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected transfer amount  input and actual output same or not then 
+	 * it will throw exception "Insufficient_Balance".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testTransferAmountInSufficeint() throws ApplicationException {
+
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount("VALID_RECEIVER_ACCOUNT_NUMBER");
+		accountTransferRequest.setTransferAmount(201.0);
+
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Insufficient_Balance");
+				}
+			}).when(businessUnit).businessValidation(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Insufficient_Balance", exception.getMessage());
+		}
+
+	}
+	
+	/**
+	 * This scenario checks whether transfer amount negative or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 *
+	 * @throws BusinessException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected transfer amount  input and actual output same or not then 
+	 * it will throw exception"transferAmount_Cannot_Be_Negative_Or_Zero".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testTransferBusinessAmountNegative() throws BusinessException, AuthenticationException, ApplicationException {
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount("123456");
+		accountTransferRequest.setReceiverAccount("123456");
+		accountTransferRequest.setTransferAmount(-100.0);
+
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Transfer_Amount_InValid");
+				}
+			}).when(businessUnit).businessValidation(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("No_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Transfer_Amount_InValid", exception.getMessage());
+		}
+
+	}
+	
+	/**
+	 * This scenario checks whether transfer amount zero or not.
+	 *
+	 * 
+	 * @author Anjali
+	 * 
+	 * Data set:<br>
+	 * 1.AccountTransferRequest.<br>
+	 * 
+	 * @throws BusinessException
+	 * 
+	 * Verification :<br>
+	 * 1. Here i am checking if expected transfer amount  input and actual output same or not then 
+	 * it will throw exception "Transfer_Amount_InValid".<br>
+	 * 2. Verifying it's fail or not.<br>
+	 */
+	@Test
+	public void testBusinessTransferAmountZero() throws ApplicationException {
+
+		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
+		accountTransferRequest.setUsername(VALID_USERNAME);
+		accountTransferRequest.setPassword(VALID_PASSWORD);
+		accountTransferRequest.setSenderAccount(VALID_SENDER_ACCOUNT_NUMBER);
+		accountTransferRequest.setReceiverAccount("VALID_RECEIVER_ACCOUNT_NUMBER");
+		accountTransferRequest.setTransferAmount(0.0);
+		try {
+			// Stubbing-->Using stubbing we are telling to Mock object about what value will
+			// be return at this method call.
+			Mockito.doAnswer(new Answer<Void>() {
+				public Void answer(InvocationOnMock invocation) throws Throwable {
+					throw new ValidationException("Transfer_Amount_InValid");
+				}
+			}).when(businessUnit).businessValidation(accountTransferRequest);
+			transferUnit.transfer(accountTransferRequest);
+			Assert.fail("Exception-Not_Exception");
+		} catch (ValidationException exception) {
+			// Assert compares the actual result of an application with the expected result.
+			Assert.assertNotNull(exception);
+			Assert.assertTrue(exception != null);
+			Assert.assertEquals("Transfer_Amount_InValid", exception.getMessage());
+		}
+
+	}
 	
 	
+	
+
 }

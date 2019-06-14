@@ -22,15 +22,21 @@ public class TransferBusinessUnit {
 	public void businessValidation(AccountTransferRequest accountTransferRequest) throws BusinessException {
 		Account senderAccount = accountRepository.findByAccountNumber(accountTransferRequest.getSenderAccount());
 		Account receiverAccount = accountRepository.findByAccountNumber(accountTransferRequest.getReceiverAccount());
+		
+		//Checks amount positive if not then throw "Transfer_Amount_InValid" exception.
 		ensurePositiveAmount(accountTransferRequest.getTransferAmount());
+		
+		//Checks amount sufficient if not then throw "Insufficient_Balance".
 		ensureSufficientBalanceAvailable(accountTransferRequest.getTransferAmount(), senderAccount);
+		
+		//Credit amount from sender to receiver 
 		creditAccount(accountTransferRequest.getTransferAmount(), receiverAccount);
+		
+		//Debits the amount from sender to receiver
 		debitAccount(accountTransferRequest.getTransferAmount(), senderAccount);		
 		
-	}
+	}	
 	
-	
-
 	/*
 	 * Debit the amount from sender to receiver then checks finalSenderBalance after
 	 * debited.
