@@ -8,7 +8,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+/**
+ * This entity contains Account information like:-
+ * 
+ * Account id--Id of account
+ * 
+ * user name--Name of user like sender and receiver
+ * 
+ * account number--It represent account holder's account number
+ * 
+ * bank name--Account holder's bank name
+ * 
+ * ifsc code--It is unique code for particular bank
+ * 
+ * balance--It represent Account holder's account  balance.
+ * 
+ * @author Anjali
+ *
+ */
 @Entity 
 @Table(name = "account")
 public class Account {

@@ -7,6 +7,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This entity contains Account information like:-
+ * 
+ * user name--It  represent Sender's and receiver's name.
+ * 
+ *  Id--It represent unique id.
+ *  
+ *  first name--It represent Account's holder first name like: Anjali
+ *  
+ *  last name--It represents Account's holder last name like: Jangir
+ *  
+ *  Email-It represent Account holder's unique Email id like: "ianjalijangir@gmail.com".
+ *  
+ *  password--It represent unique password for user authenticate or not.
+ * 
+ * @param password
+ */
 @Entity
 @Table(name = "user")
 public class User {

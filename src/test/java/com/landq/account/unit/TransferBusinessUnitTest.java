@@ -87,7 +87,7 @@ public class TransferBusinessUnitTest {
 					.thenReturn(receiverAc);
 			Mockito.when(accountRepository.save(Mockito.any(Account.class))).thenReturn(senderAc)
 					.thenReturn(receiverAc);
-			transferBusinessUnit.businessValidation(accountTransferRequest);
+			transferBusinessUnit.transfer(accountTransferRequest);
 		} catch (BusinessException exception) {
 			Assert.fail("Exception_Not_Expected");
 		}
@@ -136,7 +136,7 @@ public class TransferBusinessUnitTest {
 		try {
 			Mockito.when(accountRepository.findByAccountNumber(Mockito.anyString())).thenReturn(senderAc)
 					.thenReturn(receiverAc);
-			transferBusinessUnit.businessValidation(accountTransferRequest);
+			transferBusinessUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (BusinessException exception) {
 			Assert.assertNotNull(exception);
@@ -188,7 +188,7 @@ public class TransferBusinessUnitTest {
 		try {
 			Mockito.when(accountRepository.findByAccountNumber(Mockito.anyString())).thenReturn(senderAc)
 					.thenReturn(receiverAc);
-			transferBusinessUnit.businessValidation(accountTransferRequest);
+			transferBusinessUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (BusinessException exception) {
 			Assert.assertNotNull(exception);
@@ -244,7 +244,7 @@ public class TransferBusinessUnitTest {
 		try {
 			Mockito.when(accountRepository.findByAccountNumber(Mockito.anyString())).thenReturn(senderAc)
 					.thenReturn(receiverAc);
-			transferBusinessUnit.businessValidation(accountTransferRequest);
+			transferBusinessUnit.transfer(accountTransferRequest);
 			Assert.fail("No_Exception");
 		} catch (BusinessException exception) {
 			Assert.assertNotNull(exception);

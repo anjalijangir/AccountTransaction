@@ -1,7 +1,5 @@
 package com.landq.account.unit;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.landq.account.dao.IAccountDAO;
@@ -19,7 +17,7 @@ public class TransferBusinessUnit {
 	@Autowired
 	private IAccountDAO accountRepository;
 
-	public void businessValidation(AccountTransferRequest accountTransferRequest) throws BusinessException {
+	public void transfer(AccountTransferRequest accountTransferRequest) throws BusinessException {
 		Account senderAccount = accountRepository.findByAccountNumber(accountTransferRequest.getSenderAccount());
 		Account receiverAccount = accountRepository.findByAccountNumber(accountTransferRequest.getReceiverAccount());
 		

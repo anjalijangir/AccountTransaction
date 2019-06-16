@@ -11,20 +11,27 @@ import com.landq.account.domain.Account;
 import com.landq.account.domain.User;
 import com.landq.account.service.AccountTransferRequest;
 import com.landq.account.service.impl.AccountService;
-
+/**
+ * Run class contains main method for create the instance of classes.
+ * @author Anjali
+ *
+ */
 @Configuration
 @Import(Config.class)
 public class Run {
 
 	public static void main(String[] args) throws ApplicationException {
-
+		
+        //ApplicationContext is container which contains beans
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
 
 		// save fake data to database to perform the operation
 		generateFakeData(ctx);
+		
 		// Check for user login
 		AccountService accountService = ctx.getBean(AccountService.class);
-
+        
+		//Creats the object for AccountTransferRequest and set the value and save to data base.
 		AccountTransferRequest accountTransferRequest = new AccountTransferRequest();
 		accountTransferRequest.setUsername("anjali123");
 		accountTransferRequest.setPassword("admin");
@@ -35,7 +42,10 @@ public class Run {
 		accountService.transferMoney(accountTransferRequest);
 
 	}
-
+  /**
+   * In generateFakeData we are passing inputs for user and account and save to database.
+   * @param ctx
+   */
 	private static void generateFakeData(ApplicationContext ctx) {
 		// get beans for database DAO
 		IUserDAO userRepository = ctx.getBean(IUserDAO.class);
@@ -76,7 +86,8 @@ public class Run {
 		receiverAccount.setIfscCode("ICICI001");
 		receiverAccount.setUserName("tom");
 		accountRepository.save(receiverAccount);
-
+        
+		//// create a Receiver user and save it to database
 		User receiver1 = new User();
 		receiver1.setEmail("Ravi@abc");
 		receiver1.setFirstName("Ravi");

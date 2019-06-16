@@ -3,25 +3,27 @@ package com.landq.account.unit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.landq.account.ApplicationException;
 import com.landq.account.exception.AuthenticationException;
 import com.landq.account.exception.BusinessException;
+import com.landq.account.exception.ValidationException;
 import com.landq.account.service.AccountTransferRequest;
 
 /**
- * 1. In this unit we are fetching IAccountDAO database for transfer the amount
- * from sender to receiver 2. Transfer amount isPositive. 3. checking Sender and
- * Receiver Account Details is present in UserAccountDetails. 4. checking
- * weather sender having sufficient balance. 5. If sender having sufficient
- * balance then it will debit from sender credit to the receiver. 6. Update the
- * amount details from both side.
+ * Transfer Unit is responsible for transfer the given amount from sender account to receiver account.
+ * 
+ * The following are Validation and business rules related to Transfer
+ * 
+ * 	1. Both Sender and Receiver Accounts are mandatory
+ *  2. Sender and Receiver Accounts should be two different account (cannot be the same account number)
+ *  3. The Sender Account should have enough balance to Transfer the Money
+ *  4. There is no minimum balance maintenance required. (meaning it can have zero balance)
+ *  
+ *  Note: The common rule, the user who is transferring must be authenticated.
  */
-
 @Component
 public class TransferUnit {
 
-	
-	@Autowired // It will inject the bean for AuthenticationUnit
+	@Autowired
 	private TransferAuthenticationUnit authenticationUnit;
 	
 	@Autowired
@@ -30,34 +32,24 @@ public class TransferUnit {
 	@Autowired
 	private TransferBusinessUnit businessUnit;
 	
-
-	
-	
 	/**
 	 * transfer() method is used to transfer the amount from sender to receiver.
-	 * @param accountTransferRequest
-	 * @param senderAccount
-	 * @param receiverAccount
-	 * @param transferAmount
-	 * @throws ApplicationException
 	 * 
+	 * @param accountTransferRequest
+	 * 
+	 * @throws AuthenticationException - When the user authentication failed
+	 * @throws ValidationException - When the input validation fails
+	 * @throws BusinessException - When the Business rule for the Transfer is failed (refer the class level comments
 	 */
-	public void transfer(AccountTransferRequest accountTransferRequest) throws ApplicationException, BusinessException,AuthenticationException {
+	public void transfer(AccountTransferRequest accountTransferRequest) 
+			throws AuthenticationException, ValidationException, BusinessException {
 		
 		// Authenticate & authorize the User	
 		authenticationUnit.authenticate(accountTransferRequest.getUsername(), accountTransferRequest.getPassword());
 		//Validate the transaction
 		validationUnit.validate(accountTransferRequest);
 		// Validate business 
-		businessUnit.businessValidation( accountTransferRequest);
-		
-
-		
-		
-		
-
+		businessUnit.transfer(accountTransferRequest);
 	}
-
-	
 }
 
