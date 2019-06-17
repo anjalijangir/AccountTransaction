@@ -12,7 +12,6 @@ import com.landq.account.exception.AuthenticationException;
  * perform any transaction.
  * 
  * @author Anjali
- *
  */
 @Component
 public class TransferAuthenticationUnit {
@@ -21,20 +20,22 @@ public class TransferAuthenticationUnit {
 	private IUserDAO userDao;
 
 	/**
-	 * Here authentication method is used for authenticates the user to do
-	 * transaction..using username and password If userName and password is not
+	 * Here authentication method is used for authenticates the user for
+	 * transaction..using user name and password If userName and password is not
 	 * valid then user is not able to do transaction.
 	 * 
-	 * It will test first if userName or password empty or null then throw the @AuthenticationException
+	 * It will test first if userName or password empty or null then throw
+	 * the @AuthenticationException
 	 * 
 	 * @param userName
 	 * @param password
-	 * @throws AuthenticationException
+	 * @throws AuthenticationException--When the user authentication failed.
 	 */
 	public void authenticate(String userName, String password) throws AuthenticationException {
 		if ((userName == null || userName.isEmpty()) || (password == null || password.isEmpty())) {
 			throw new AuthenticationException("Invalid_userName_and_password");
 		}
+		// find user account in Account table by userName
 		User user = userDao.findByUserName(userName);
 		if (user != null) {
 			if (user.getPassword() == null || !user.getPassword().equals(password)) {

@@ -18,8 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Configuration class Configure the databases and entities and it contains
- * beans.
+ * Configuration class used for implementing spring configuration.
  * 
  * @author Anjali
  *
@@ -29,8 +28,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.landq.account.dao")
 public class Config {
-
-	@Bean /** It will create the bean for DataSource */
+	// Creating data source bean with custom configuration.
+	@Bean
 	public DataSource dataSource() {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -41,20 +40,20 @@ public class Config {
 		return dataSource;
 	}
 
-	@Bean /** It will create the bean for LocalContainerEntityManagerFactoryBean */
+	// It will create the bean for LocalContainerEntityManagerFactoryBean
+	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
 		em.setPackagesToScan(new String[] { "com.landq.account.domain" });
-
 		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaProperties(additionalProperties());
-
 		return em;
 	}
 
-	@Bean /** It will create the bean for PlatformTransactionManager. */
+	// It will create the bean for PlatformTransactionManager
+	@Bean
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		JpaTransactionManager tManager = new JpaTransactionManager();
 

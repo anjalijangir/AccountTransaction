@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.landq.account.domain.User;
+
 /**
  * This IUserDAO will fetch the data from User database.
  */

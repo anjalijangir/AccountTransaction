@@ -1,6 +1,5 @@
 package com.landq.account.domain;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,34 +18,34 @@ import javax.persistence.Table;
  * 
  * bank name--Account holder's bank name
  * 
- * ifsc code--It is unique code for particular bank
+ * IFSC code--It is unique code for particular bank
  * 
- * balance--It represent Account holder's account  balance.
+ * balance--It represent Account holder's account balance.
  * 
  * @author Anjali
  *
  */
-@Entity 
+@Entity
 @Table(name = "account")
 public class Account {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
-	
+
 	@Column
 	private String userName;
-	
+
 	@Column
 	private String accountNumber;
-	
+
 	@Column
 	private String bankName;
-	
+
 	@Column
 	private String ifscCode;
-	
+
 	@Column
 	private Double balance;
 
@@ -103,7 +102,5 @@ public class Account {
 		return "Account [id=" + id + ", userName=" + userName + ", accountNumber=" + accountNumber + ", bankName="
 				+ bankName + ", ifscCode=" + ifscCode + ", balance=" + balance + "]";
 	}
-
-	
 
 }

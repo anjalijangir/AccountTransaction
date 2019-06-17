@@ -9,9 +9,6 @@ import com.landq.account.ApplicationException;
  * User name password Empty
  * 
  * Account number null or empty
- * 
- * @param message
- *
  */
 public class ValidationException extends ApplicationException {
 	public ValidationException(String message) {

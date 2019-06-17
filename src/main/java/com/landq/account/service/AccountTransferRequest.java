@@ -1,17 +1,20 @@
 package com.landq.account.service;
+
 /**
- * AccountTransferRequest meant to if we want to transfer money from one account to another account
- * then what things we need which is:
+ * AccountTransferRequest contains if we want to transfer money from one account
+ * to another account then what things we need which is:
  * 
- * 1.user name
- * 2.password
- * 3.sender account
- * 4.receiver account
- * 5.transfer amount
+ * 1.user name--Unique name of user.
+ * 
+ * 2.password--Unique password of user.
+ * 
+ * 3.sender account--unique account number of sender.
+ * 
+ * 4.receiver account--unique account number of receiver.
+ * 
+ * 5.transfer amount--money for transfer from one account to another.
  * 
  * @author Anjali
- * 
- *
  */
 public class AccountTransferRequest {
 
